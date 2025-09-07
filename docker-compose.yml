@@ -1,0 +1,29 @@
+services:
+  web:
+    build: .
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres123@db:5432/projectapmdatabase
+    container_name: projectapm
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+    depends_on:
+      - db
+
+  
+  db:
+    image: postgres:15
+    container_name: ProjectAPMdb
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: projectapmdatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

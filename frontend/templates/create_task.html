@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-primary">Создать задачу</h2>
+
+    <form method="post" action="/admin/tasks/create-task" class="mt-4">
+        <input type="hidden" name="order_id" value="{{ order_id }}">
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Название задачи</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Введите название задачи" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="status" class="form-label">Статус</label>
+            <select class="form-select" id="status" name="status" required>
+                <option value="Готово к работе">Готово к работе</option>
+                <option value="В работе">В работе</option>
+                <option value="Готово">Готово</option>
+                <option value="Брак">Брак</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Создать</button>
+        <a href="/orders/page/{{ order_id }}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}
