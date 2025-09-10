@@ -21,13 +21,12 @@ async def read_all_orders(db:db_dependency, user: user_dependency):
 
 
 @router.get("/page", response_class=HTMLResponse)
-async def tasks_page(request: Request, db: db_dependency):
-    user = await get_current_user_from_cookie(request)
+async def tasks_page(request: Request, db: db_dependency, user: user_dependency_cookie):
     if not user:
         return redirect_to_login()
 
     orders = db.query(Order).all()
-    return templates.TemplateResponse("orders.html", {"request": request, "orders": orders, "user": user})
+    return templates.TemplateResponse(request, "orders.html", {"request": request, "orders": orders, "user": user})
 
 
 @router.get("/page/{order_id}", response_class=HTMLResponse)
@@ -35,6 +34,7 @@ async def get_order_detail_page(request: Request,db: db_dependency,
                                 user: user_dependency_cookie,order_id: int = Path(gt=0)):
     if user is None or user.get("user_role") not in ["operator", "admin"]:
         return templates.TemplateResponse(
+            request,
             "login.html", 
             {"request": request, "error": "Not authorized"}
         )
@@ -42,11 +42,13 @@ async def get_order_detail_page(request: Request,db: db_dependency,
     order_model = db.query(Order).filter(Order.id == order_id).first()
     if order_model is None:
         return templates.TemplateResponse(
+            request,
             "404.html", 
             {"request": request, "message": "Order not found"}
         )
 
     return templates.TemplateResponse(
+        request,
         "order_detail.html",
         {"request": request, "order": order_model, "user": user}
     )
@@ -71,6 +73,7 @@ async def get_order_files_page(request: Request,db: db_dependency,
                                user: user_dependency_cookie,order_id: int = Path(gt=0)):
     if user is None or user.get("user_role") not in ["operator", "admin"]:
         return templates.TemplateResponse(
+            request,
             "login.html",
             {"request": request, "error": "Not authorized"}
         )
@@ -78,6 +81,7 @@ async def get_order_files_page(request: Request,db: db_dependency,
     order_model = db.query(Order).filter(Order.id == order_id).first()
     if not order_model:
         return templates.TemplateResponse(
+            request,
             "404.html",
             {"request": request, "message": "Order not found"}
         )
@@ -85,6 +89,7 @@ async def get_order_files_page(request: Request,db: db_dependency,
     files = order_model.files
 
     return templates.TemplateResponse(
+        request,
         "order_files.html",
         {"request": request, "order": order_model, "files": files, "user": user}
     )

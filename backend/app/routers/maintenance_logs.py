@@ -44,7 +44,7 @@ async def read_log_by_id(db: db_dependency, user: user_dependency,
     return log_model
 
 
-@router.put("/update-logs/{log_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.put("/update-logs/{log_id}", status_code=status.HTTP_200_OK)
 async def update_log(log_update: MaintenanceLogUpdate, user: user_dependency,
                      db: db_dependency, log_id: int= Path(gt=0)):
     if user is None or user.get("user_role") not in ["operator", "admin"]:

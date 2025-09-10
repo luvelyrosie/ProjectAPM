@@ -48,7 +48,7 @@ async def get_task_by_id(db: db_dependency, user: user_dependency,
     return task_model
 
 
-@router.put("/update-taks/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.put("/update-taks/{task_id}", status_code=status.HTTP_200_OK)
 async def update_task_by_id(db: db_dependency,user: user_dependency,
                             task_update: TaskUpdate, task_id: int = Path(gt=0)):
     if user is None or user.get("user_role") not in ["operator", "admin"]:

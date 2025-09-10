@@ -12,6 +12,10 @@
                         <td>{{ order.id }}</td>
                     </tr>
                     <tr>
+                        <th>Название заказа</th>
+                        <td>{{ order.name or "Без названия" }}</td>
+                    </tr>
+                    <tr>
                         <th>Статус</th>
                         <td>
                             <span class="badge 

@@ -14,17 +14,18 @@ router=APIRouter(
 # Pages
 @router.get("/login-page", response_class=HTMLResponse)
 async def login_page(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
+    return templates.TemplateResponse(request, "login.html", {"request": request})
 
 
 @router.get("/register-page", response_class=HTMLResponse)
 async def register_page(request: Request):
-    return templates.TemplateResponse("register.html", {"request": request})
+    return templates.TemplateResponse(request, "register.html", {"request": request})
 
 
 # API
 @router.post("/create-user")
 async def create_register_user(
+    request: Request,
     db: db_dependency,
     username: str = Form(...),
     email: str = Form(...),
@@ -33,7 +34,7 @@ async def create_register_user(
 ):
     user_exists = db.query(User).filter(User.username == username, User.email == email).first()
     if user_exists:
-        return templates.TemplateResponse("register.html", {"request": {}, "error": "User already exists!"})
+        return templates.TemplateResponse(request, "register.html", {"request": request, "error": "User already exists!"})
 
     user_model = User(
         username=username,
@@ -61,7 +62,7 @@ async def create_register_user(
 async def login_html(request: Request, db: db_dependency, username: str = Form(...), password: str = Form(...)):
     user = authenticate_user(username, password, db)
     if not user:
-        return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid credentials"})
+        return templates.TemplateResponse(request, "login.html", {"request": request, "error": "Invalid credentials"})
 
     token = create_access_token(user.username, user.id, user.role, timedelta(minutes=20))
     response = RedirectResponse(url="/orders/page", status_code=status.HTTP_302_FOUND)

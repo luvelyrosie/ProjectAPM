@@ -36,7 +36,7 @@ async def get_performance(db: db_dependency, user: user_dependency,
     return perf_model
 
 
-@router.put("/performance/{perf_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.put("/performance/{perf_id}", status_code=status.HTTP_200_OK)
 async def update_performance(db: db_dependency, user: user_dependency,
                              perf_update: PerformanceUpdate, perf_id: int=Path(gt=0)):
     if user is None or user.get("user_role") not in ["operator", "admin"]:
