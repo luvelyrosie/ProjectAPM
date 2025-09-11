@@ -20,6 +20,9 @@ ProjectAPM — это приложение на FastAPI для управлен�
 Смотреть видео: [ProjectAPMvideo.mp4](./video/ProjectAPMvideo.mp4)
 
 
+[Смотреть видео (Google Drive)](https://drive.google.com/file/d/1-1sxG6BP0aHzhcLzt-B-XcIdh9KO1a0f/view?usp=drivesdk)
+
+
 Проект доступен онлайн по ссылке:  
 
 [ProjectAPM на Railway](https://projectapm.up.railway.app/)
