@@ -189,7 +189,7 @@ async def delete_order_file(db : db_dependency, user: user_dependency, file_id: 
     return JSONResponse(content={"detail": "File deleted successfully"})
 
 
-@router.get("/file/{file_id}", response_class=FileResponse)
+@router.get("/api/file/{file_id}", response_class=FileResponse)
 async def download_file(db: db_dependency, user: user_dependency, file_id: int = Path(gt=0)):
     if user is None or user.get("user_role") not in ["operator", "admin"]:
         raise HTTPException(status_code=403, detail="Not authorized")
