@@ -6,19 +6,26 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from starlette import status
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
-from starlette.middleware.trustedhost import TrustedHostMiddleware
-from starlette.middleware import ProxyHeadersMiddleware
+from fastapi.middleware.cors import CORSMiddleware
+import os
 
 
-app=FastAPI()
+app = FastAPI()
 
-app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
-app.add_middleware(HTTPSRedirectMiddleware)
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
+# Enable HTTPS redirect only in production
+if os.getenv("ENV") == "production":
+    from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+    app.add_middleware(HTTPSRedirectMiddleware)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 Base.metadata.create_all(bind=engine)
-
 
 templates = Jinja2Templates(directory="frontend/templates")
 
