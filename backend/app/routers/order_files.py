@@ -60,6 +60,72 @@ async def order_files_page(request: Request, db: db_dependency, user: user_depen
 
 @router.post("/create-order-file", status_code=status.HTTP_201_CREATED)
 async def create_order_file(db: db_dependency,
+                            user: user_dependency_cookie, order_id: int = Form(...), 
+                            uploaded_file: UploadFile = File(...)
+                            ):
+
+    if user is None or user.get("user_role") not in ["operator", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    file_location = f"{UPLOAD_DIR}/{uploaded_file.filename}"
+    with open(file_location, "wb") as buffer:
+        shutil.copyfileobj(uploaded_file.file, buffer)
+
+    order_file = OrderFile(order_id=order_id, filename=uploaded_file.filename, filepath=file_location)
+    db.add(order_file)
+    db.commit()
+    db.refresh(order_file)
+
+    return {"id": order_file.id, "filename": order_file.filename, "filepath": order_file.filepath}
+
+
+@router.put("/update-order-file/{file_id}", status_code=status.HTTP_200_OK)
+async def update_order_file(db: db_dependency, user: user_dependency_cookie,
+                            file_id: int = Path(gt=0),uploaded_file: UploadFile = File(...)):
+    if user is None or user.get("user_role") not in ["operator", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    file = db.query(OrderFile).filter(OrderFile.id == file_id).first()
+    if not file:
+        raise HTTPException(status_code=404, detail="File not found")
+
+    old_path = os.path.join(UPLOAD_DIR, file.filename)
+    if os.path.exists(old_path):
+        os.remove(old_path)
+
+    new_path = os.path.join(UPLOAD_DIR, uploaded_file.filename)
+    with open(new_path, "wb") as buffer:
+        shutil.copyfileobj(uploaded_file.file, buffer)
+
+    file.filename = uploaded_file.filename
+    file.filepath = new_path
+    db.commit()
+    db.refresh(file)
+
+    return {"id": file.id, "filename": file.filename, "filepath": file.filepath}
+
+
+@router.delete("/delete-order-file/{file_id}", status_code=status.HTTP_200_OK)
+async def delete_order_file(db : db_dependency, user: user_dependency_cookie, file_id: int = Path(gt=0)):
+    if user is None or user.get("user_role") not in ["operator", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    file = db.query(OrderFile).filter(OrderFile.id == file_id).first()
+    if not file:
+        raise HTTPException(status_code=404, detail="File not found")
+
+    if os.path.exists(file.filepath):
+        os.remove(file.filepath)
+
+    db.delete(file)
+    db.commit()
+
+    return JSONResponse(content={"detail": "File deleted successfully"})
+
+
+# api
+@router.post("/create-order-file", status_code=status.HTTP_201_CREATED)
+async def create_order_file(db: db_dependency,
                             user: user_dependency, order_id: int = Form(...), 
                             uploaded_file: UploadFile = File(...)
                             ):
