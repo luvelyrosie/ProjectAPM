@@ -5,9 +5,17 @@ from .routers import users, orders, tasks, workstations, reject_reasons, mainten
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from starlette import status
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+from starlette.middleware.trustedhost import TrustedHostMiddleware
+from starlette.middleware import ProxyHeadersMiddleware
 
 
 app=FastAPI()
+
+app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
+app.add_middleware(HTTPSRedirectMiddleware)
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
+
 
 Base.metadata.create_all(bind=engine)
 
