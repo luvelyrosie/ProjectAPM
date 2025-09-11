@@ -68,7 +68,7 @@ def upgrade() -> None:
         'tasks',
         sa.Column('id', sa.Integer, primary_key=True, index=True),
         sa.Column('name', sa.String, index=True),
-        sa.Column('order_id', sa.Integer, sa.ForeignKey('orders.id')),
+        sa.Column('order_id', sa.Integer, sa.ForeignKey('orders.id', ondelete='CASCADE')),
         sa.Column('workstation_id', sa.Integer, sa.ForeignKey('workstations.id')),
         sa.Column('operator_id', sa.Integer, sa.ForeignKey('users.id'), nullable=True),
         sa.Column('status', sa.String, server_default='Готово к работе'),
