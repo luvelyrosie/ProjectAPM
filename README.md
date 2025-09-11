@@ -18,11 +18,11 @@ ProjectAPM — это приложение на FastAPI для управлен�
 
 Проект доступен онлайн по ссылке:  
 
-[ProjectAPM на Railway](https://projectapm-production.up.railway.app/)
+[ProjectAPM на Railway](https://projectapm.up.railway.app/)
 
 Основная страница заказов:  
 
-[Orders Page](https://projectapm-production.up.railway.app/orders/page)
+[Orders Page](https://projectapm.up.railway.app/orders/page)
 
 Тестовый Администратор
 
