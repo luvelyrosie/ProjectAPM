@@ -30,7 +30,7 @@ async def get_order_files(db: db_dependency,user: user_dependency,
 
 
 @router.get("/file/{file_id}", response_class=FileResponse)
-async def download_file(db: db_dependency, user: user_dependency, file_id: int = Path(gt=0)):
+async def download_file(db: db_dependency, user: user_dependency_cookie, file_id: int = Path(gt=0)):
     if user is None or user.get("user_role") not in ["operator", "admin"]:
         raise HTTPException(status_code=403, detail="Not authorized")
 
@@ -187,3 +187,19 @@ async def delete_order_file(db : db_dependency, user: user_dependency, file_id: 
     db.commit()
 
     return JSONResponse(content={"detail": "File deleted successfully"})
+
+
+@router.get("/file/{file_id}", response_class=FileResponse)
+async def download_file(db: db_dependency, user: user_dependency, file_id: int = Path(gt=0)):
+    if user is None or user.get("user_role") not in ["operator", "admin"]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    file = db.query(OrderFile).filter(OrderFile.id == file_id).first()
+    if not file:
+        raise HTTPException(status_code=404, detail="File not found")
+
+    file_path = os.path.join(UPLOAD_DIR, file.filename)
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File missing on server")
+
+    return FileResponse(path=file_path, filename=file.filename)
