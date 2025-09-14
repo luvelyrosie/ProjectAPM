@@ -1,5 +1,170 @@
 # ProjectAPM
 
+ProjectAPM is a FastAPI-based application for managing orders and tasks.  
+It includes user authentication, CRUD operations for orders and tasks, and a PostgreSQL database.  
+The project is fully containerized with Docker, making it easy to run and test on any machine.
+
+---
+
+## Features
+
+* User registration and authentication (JWT)
+* CRUD operations for orders and tasks
+* Role-based access control (admin/operator)
+* Full Docker containerization
+* Database migrations with Alembic
+
+---
+
+## Deployment and Access
+
+The project is available online:  
+
+[ProjectAPM on Railway](https://projectapm.up.railway.app/)
+
+Main orders page:  
+
+[Orders Page](https://projectapm.up.railway.app/orders/page)
+
+### Test Administrator
+
+For testing orders and tasks creation, a test administrator account is available:  
+
+- **Username:** admin  
+- **Email:** admin@admin  
+- **Password:** admin123  
+
+With this user you can:  
+- Create new orders  
+- View all orders  
+- Create tasks for orders  
+- Change task statuses  
+- View order and task details  
+
+After logging in as administrator, you will be redirected to the main orders page.  
+
+> **Important:** To create orders and tasks, you must use a user with the `admin` role.
+
+---
+
+## Installation and Run with Docker
+
+### Requirements
+
+* [Docker](https://www.docker.com/get-started) installed  
+* [Docker Compose](https://docs.docker.com/compose/install/)  
+* Optional: Python 3.11+ for local development  
+
+---
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/luvelyrosie/ProjectAPM.git
+cd ProjectAPM
+```
+
+2. Build and start containers:
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+3. Apply database migrations:
+
+```bash
+docker compose run --rm web bash -c "cd backend && alembic upgrade head"
+```
+
+---
+
+## Application Access
+
+* FastAPI runs on port **8000**. Open in your browser or API client:
+
+```
+http://localhost:8000
+```
+
+* Orders main page:
+
+```
+http://localhost:8000/orders/page
+```
+
+4. Create a user with the `admin` role to be able to manage orders, tasks, and the full functionality of the app.  
+
+* role: admin  
+
+* Swagger UI documentation:
+
+```
+http://localhost:8000/docs
+```
+
+* Redoc API documentation:
+
+```
+http://localhost:8000/redoc
+```
+
+---
+
+## Alembic Migrations
+
+* Migration scripts are located in `backend/alembic/versions`.  
+* To create a new migration:
+
+```bash
+docker compose run --rm web bash -c "cd backend && alembic revision -m 'your_message'"
+docker compose run --rm web bash -c "cd backend && alembic upgrade head"
+```
+
+---
+
+## Database Notes
+
+* Each developer gets a **separate Postgres database** via Docker.  
+* The database is created automatically when the container starts.  
+* Alembic migrations create all tables and columns, including user roles and order/task relationships.  
+* Initial data can be added through the admin user.  
+
+---
+
+## Running Locally (without Docker)
+
+1. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Run the application:
+
+```bash
+uvicorn backend.app.main:app --reload
+```
+
+3. Apply migrations:
+
+```bash
+alembic upgrade head
+```
+
+---
+
+## Additional Notes
+
+* Make sure Postgres is running before applying migrations.  
+* Database password is defined in `docker-compose.yml` and can be safely changed.  
+* On a fresh setup, Alembic will create all tables and columns, and the application will be ready to run.  
+
+
+
+
+# ProjectAPM
+
 ProjectAPM — это приложение на FastAPI для управления заказами и задачами. Оно включает аутентификацию пользователей, операции CRUD для заказов и задач, а также базу данных PostgreSQL. Проект полностью контейнеризован с помощью Docker, что позволяет легко запускать и тестировать его на любой машине.
 
 ---
@@ -15,13 +180,6 @@ ProjectAPM — это приложение на FastAPI для управлен�
 ---
 
 ## Деплой и доступ к приложению
-
-
-Смотреть видео: [ProjectAPMvideo.mp4](./video/ProjectAPMvideo.mp4)
-
-
-[Смотреть видео (Google Drive)](https://drive.google.com/file/d/1-1sxG6BP0aHzhcLzt-B-XcIdh9KO1a0f/view?usp=drivesdk)
-
 
 Проект доступен онлайн по ссылке:  
 
