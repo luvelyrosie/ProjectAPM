@@ -1,4 +1,3 @@
-/* General Body */
 body {
     font-family: 'Segoe UI', sans-serif;
     background-color: #f7f9fc;
@@ -7,7 +6,6 @@ body {
     padding: 0;
 }
 
-/* Container */
 .container {
     max-width: 900px !important;
     margin: 40px auto !important;
@@ -17,7 +15,6 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* Tables */
 .table {
     width: 100% !important;
     border-collapse: separate !important;
@@ -42,7 +39,6 @@ body {
     background-color: #f2f4f7 !important;
 }
 
-/* Buttons */
 .btn.btn-primary {
     background-color: #4a90e2 !important;
     color: white !important;
@@ -76,7 +72,6 @@ body {
     color: white !important;
 }
 
-/* Card for order/task */
 .card {
     border-radius: 12px !important;
     background-color: #fff !important;
@@ -90,13 +85,11 @@ body {
     transform: translateY(-3px) !important;
 }
 
-/* Headings */
 h2, h3 {
     color: #2c3e50 !important;
     margin-bottom: 20px !important;
 }
 
-/* Misc */
 ul {
     padding-left: 20px !important;
 }

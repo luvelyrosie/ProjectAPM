@@ -1,4 +1,3 @@
-// Start Order
 async function startOrder(orderId) {
     try {
         const response = await fetch(`/orders/${orderId}/start`, {
@@ -14,7 +13,6 @@ async function startOrder(orderId) {
     }
 }
 
-// Complete Order
 async function completeOrder(orderId) {
     try {
         const response = await fetch(`/orders/${orderId}/complete`, {
@@ -30,7 +28,6 @@ async function completeOrder(orderId) {
     }
 }
 
-// Reject Order
 async function rejectOrder(orderId) {
     const reason = prompt("Введите причину отклонения заказа:");
     if (!reason) return alert("Причина отклонения обязательна!");
@@ -52,7 +49,6 @@ async function rejectOrder(orderId) {
 }
 
 
-// Start Task
 async function takeTask(taskId) {
     try {
         const response = await fetch(`/tasks/${taskId}/start`, {
@@ -68,7 +64,6 @@ async function takeTask(taskId) {
     }
 }
 
-// Complete Task
 async function completeTask(taskId) {
     try {
         const response = await fetch(`/tasks/${taskId}/complete`, {
@@ -84,7 +79,6 @@ async function completeTask(taskId) {
     }
 }
 
-// Reject Task
 async function rejectTask(taskId) {
     const reason = prompt("Введите причину отклонения задания:");
     if (!reason) return alert("Причина отклонения обязательна!");

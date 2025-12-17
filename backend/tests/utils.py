@@ -164,7 +164,6 @@ def test_performance(db, test_user, test_task):
 
 @pytest.fixture
 def test_order_file(db, test_order):
-    # Create a temporary file to simulate upload
     temp_dir = tempfile.mkdtemp()
     temp_file_path = os.path.join(temp_dir, "test_document.pdf")
     with open(temp_file_path, "wb") as f:
@@ -180,7 +179,6 @@ def test_order_file(db, test_order):
     db.refresh(file)
     yield file
 
-    # Cleanup
     if os.path.exists(temp_file_path):
         os.remove(temp_file_path)
     shutil.rmtree(temp_dir)

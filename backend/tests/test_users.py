@@ -7,7 +7,6 @@ app.dependency_overrides[get_db] = override_get_db
 app.dependency_overrides[get_current_user_from_cookie] = override_get_current_user
 
 
-# Pages tests
 def test_login_page():
     response = client.get("/users/login-page")
     assert response.status_code == status.HTTP_200_OK
@@ -20,7 +19,6 @@ def test_register_page():
     assert "register" in response.text.lower()
 
 
-# API tests
 def test_create_user_redirect():
     data = {
         "username": "newuser",

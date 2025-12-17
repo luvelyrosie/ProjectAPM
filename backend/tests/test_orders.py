@@ -21,7 +21,6 @@ async def override_get_current_user_cookie(request: Request):
     }
 
 
-# Pages tests
 def test_orders_page_redirect_if_not_logged_in():
     app.dependency_overrides[get_current_user_from_cookie] = fake_user_cookie
 
@@ -51,9 +50,8 @@ def test_order_files_page(test_user, test_order_file):
     response = client.get(f"/orders/page/{test_order_file.order_id}/files")
     assert response.status_code == status.HTTP_200_OK
     assert test_order_file.filename in response.text
-    
-    
-# API tests
+
+
 def test_read_all_orders(test_user, test_order):
     response = client.get("/orders/")
     assert response.status_code == status.HTTP_200_OK

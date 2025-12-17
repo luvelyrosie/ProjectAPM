@@ -2,7 +2,6 @@ from .utils import *
 from fastapi import status
 
 
-# --- Users ---
 def test_read_all_users(test_user):
     response = client.get("/admin/users")
     assert response.status_code == status.HTTP_201_CREATED
@@ -24,7 +23,6 @@ def test_delete_user(test_user):
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-# --- Orders ---
 def test_create_order_api(test_order):
     payload = {"name": "API Order", "status": "Готово к работе"}
     response = client.post("/admin/orders/api/create-order", json=payload)
@@ -44,7 +42,6 @@ def test_delete_order_by_id(test_order):
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-# --- Tasks ---
 def test_create_task_api(test_task):
     payload = {"name": "API Task", "order_id": test_task.order_id, "workstation_id": test_task.workstation_id,
                "operator_id": test_task.operator_id, "status": "Готово к работе"}
@@ -59,7 +56,6 @@ def test_delete_task_by_id(test_task):
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-# --- Workstations ---
 def test_create_workstation(test_workstation):
     payload = {"name": "API WS", "description": "Workstation API"}
     response = client.post("/admin/workstations/create-worksation", json=payload)
@@ -79,7 +75,6 @@ def test_delete_workstation_by_id(test_workstation):
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-# --- Reject Reasons ---
 def test_create_reject_reasons(test_reject_reason):
     payload = {"description": "API Reject Reason"}
     response = client.post("/admin/create-reject_reasons", json=payload)
@@ -99,13 +94,11 @@ def test_delete_reject_reason_by_id(test_reject_reason):
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-# --- Maintenance Logs ---
 def test_delete_log(test_maintenance_log):
     response = client.delete(f"/admin/delete-log/{test_maintenance_log.id}")
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
-# --- Performance ---
 def test_read_performance(test_performance):
     response = client.get("/admin/performance/")
     assert response.status_code == status.HTTP_200_OK

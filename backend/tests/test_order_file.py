@@ -5,7 +5,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 from app.main import app
-from app.models import Base, OrderFile, User, Order
+from app.models import Base, OrderFile, Order
 from app.dependencies import get_db, get_current_user
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -77,7 +77,6 @@ def test_order_file(db, test_order):
         conn.commit()
 
 
-# --- Tests ---
 def test_create_order_file(test_order):
     with tempfile.NamedTemporaryFile(delete=False) as tmp:
         tmp.write(b"Test content")
